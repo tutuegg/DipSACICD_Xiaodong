@@ -29,6 +29,7 @@ jobs:
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'HIGH'
+        output: 'trivy-results.table'
 
 
   if_scan_fail:
@@ -40,7 +41,7 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_COLOR: red
+          SLACK_COLOR: #FF0000
           SLACK_TITLE: Scan failed
           SLACK_MESSAGE: Failed trivy scan, see uploaded report
     
@@ -50,4 +51,4 @@ jobs:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
           file_path: 'trivy-results.table'
-          initial_comment: 'post by Wu Xiaodong'
+          initial_comment: 'post by tu'
