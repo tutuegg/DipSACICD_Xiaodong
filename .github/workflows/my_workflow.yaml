@@ -29,12 +29,12 @@ jobs:
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'HIGH'
-        output: 'trivy-results.table'
+        output: 'trivy-results.txt'
 
     - name: upload_report 
       uses: MeilCli/slack-upload-file@v3
       with:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
-          file_path: 'trivy-results.table'
+          file_path: 'trivy-results.txt'
           initial_comment: 'post by tu'
