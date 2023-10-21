@@ -1,19 +1,34 @@
-# note: any subseqent push it will run
 name: My first workflow
 on:
-  # any push will trigger this workflow, can have >1
-- push
-
+ push: 
+    branches:
+      - 'v[0-9].[0-9]'
+      - '!v[0-9].[0-9]-beta'
+      - '!v[0-9].[0-9].[0-9]'
+      - '!feature-*'
 jobs:
   my_first_ci:
-    # for this point onwards its Ubuntu
     runs-on: ubuntu-latest
 
     steps:
     - name: get date in Github
       id: get_date_in_Github
       run: echo "date in github $(date)"
-      
-      
+    
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Build an image from Dockerfile
+      run: |
+        docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL'
+
     
 
