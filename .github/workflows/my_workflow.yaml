@@ -1,0 +1,19 @@
+# note: any subseqent push it will run
+name: My first workflow
+on:
+  # any push will trigger this workflow, can have >1
+- push
+
+jobs:
+  my_first_ci:
+    # for this point onwards its Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: get date in Github
+      id: get_date_in_Github
+      run: echo "date in github $(date)"
+      
+      
+    
+
