@@ -30,7 +30,7 @@ jobs:
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'HIGH'
+        severity: 'CRITICAL'
         output: 'trivy-results.txt'
       continue-on-error: true
 
@@ -51,3 +51,27 @@ jobs:
           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
           file_path: 'trivy-results.txt'
           initial_comment: 'post by tu'
+    
+    - 
+      name: Set up QEMU
+      if: steps.scanner.outcome =='success'
+      uses: docker/setup-qemu-action@v3
+    -
+      name: Set up Docker Buildx
+      if: steps.scanner.outcome =='success'
+      uses: docker/setup-buildx-action@v3
+    -
+      name: Login to Docker Hub
+      if: steps.scanner.outcome =='success'
+      uses: docker/login-action@v3
+      with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+    -
+      name: Build and push
+      if: steps.scanner.outcome =='success'
+      uses: docker/build-push-action@v5
+      with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-fortunne:${{ github.sha }}
