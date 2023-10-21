@@ -39,7 +39,7 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       env:
          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-         SLACK_COLOR: #FF0000
+         SLACK_COLOR: '#FF0000'
          SLACK_TITLE: Scan failed
          SLACK_MESSAGE: Failed trivy scan, see uploaded report
   
