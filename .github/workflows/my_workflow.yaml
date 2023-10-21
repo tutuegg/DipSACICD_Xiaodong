@@ -36,11 +36,18 @@ jobs:
     needs: my_first_cicd
     if: failure()
     steps:
-    - uses: actions/checkout@v2
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
       env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_COLOR: good
+          SLACK_COLOR: red
           SLACK_TITLE: Scan failed
           SLACK_MESSAGE: Failed trivy scan, see uploaded report
+    
+    - name: upload_report 
+      uses: MeilCli/slack-upload-file@v3
+      with:
+          slack_token: ${{ secrets.SLACK_TOKEN }}
+          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+          file_path: 'trivy-results.table'
+          initial_comment: 'post by Wu Xiaodong'
