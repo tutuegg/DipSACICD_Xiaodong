@@ -4,10 +4,10 @@ on:
   # any push will trigger this workflow, can have >1
  push: 
     branches:
-    - 'v<digit>.<digit>'
-    - '!v<digit>.<digit>-beta'
-    - '!v<digit>.<digit>.<digit>'
-    - '!vfeature-*'
+      - 'v[0-9].[0-9]'
+      - '!v[0-9].[0-9]-beta'
+      - '!v[0-9].[0-9].[0-9]'
+      - '!feature-*'
 jobs:
   my_first_ci:
     # for this point onwards its Ubuntu
