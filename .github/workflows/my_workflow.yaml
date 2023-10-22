@@ -30,7 +30,7 @@ jobs:
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'HIGH'
+        severity: 'CRITICAL'
         output: 'trivy-results.txt'
       continue-on-error: true
 
@@ -52,6 +52,14 @@ jobs:
           file_path: 'trivy-results.txt'
           initial_comment: 'post by tu'
     
+    - name: Slack_Notification_Fail 
+      if: steps.scanner.outcome !='success'
+      uses: rtCamp/action-slack-notify@v2
+      env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_COLOR: good
+          SLACK_TITLE: Scan failed
+          SLACK_MESSAGE: Failed trivy scan, see uploaded report
     - 
       name: Set up QEMU
       if: steps.scanner.outcome =='success'
@@ -74,4 +82,4 @@ jobs:
       with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-fortune:${{ github.sha }}
