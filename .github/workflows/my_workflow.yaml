@@ -30,7 +30,7 @@ jobs:
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL'
+        severity: 'HIGH'
         output: 'trivy-results.txt'
       continue-on-error: true
 
@@ -74,4 +74,4 @@ jobs:
       with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-fortunne:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:${{ github.sha }}
