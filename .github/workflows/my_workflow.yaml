@@ -77,9 +77,25 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
     -
       name: Build and push
+      id: build_and_push
       if: steps.scanner.outcome =='success'
       uses: docker/build-push-action@v5
       with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-fortune:${{ github.event.pull_request.head.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-fortune:${{ github.sha }}
+
+    
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@v3.1.1
+
+    - name: Sign image with a key
+      run: |
+          cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
+      env:
+        TAGS: ${{ secrets.DOCKERHUB_USERNAME }}/go-fortune:${{ github.sha }}
+        COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+        COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+        DIGEST: ${{ steps.build_and_push.outputs.digest }}
+
+  
