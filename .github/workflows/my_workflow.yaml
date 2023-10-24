@@ -10,6 +10,11 @@ jobs:
   my_first_cicd:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+      id-token: write # needed for signing the images with GitHub OIDC Token
+
     steps:
     - name: get date in Github
       id: get_date_in_Github
