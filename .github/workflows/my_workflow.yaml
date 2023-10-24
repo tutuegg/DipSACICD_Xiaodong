@@ -81,7 +81,6 @@ jobs:
       if: steps.scanner.outcome =='success'
       uses: docker/build-push-action@v5
       with:
-          context: .
           push: true
           tags: tulearn/go-fortune:latest
 
