@@ -13,7 +13,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write # needed for signing the images with GitHub OIDC Token
+      id-token: write 
 
     steps:
     - name: get date in Github
@@ -55,7 +55,7 @@ jobs:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
           file_path: 'trivy-results.txt'
-          initial_comment: 'post by tu'
+          initial_comment: 'post by WXD'
     
     - name: Slack_Notification_SUCCESS
       if: steps.scanner.outcome =='success'
@@ -92,11 +92,14 @@ jobs:
     
     - name: Install Cosign
       uses: sigstore/cosign-installer@v3.1.1
-
-    - name: Sign the images with GitHub OIDC Token
+    
+    - name: Sign image with a key
+      run: |
+        cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
       env:
-        DIGEST: ${{ steps.build_and_push.outputs.digest }}
         TAGS: tulearn/go-fortune:latest
-      run: cosign sign --yes "${TAGS}@${DIGEST}"
+        COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+        COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+        DIGEST: ${{ github.sha }}
 
   
