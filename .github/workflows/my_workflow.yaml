@@ -82,12 +82,12 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
     -
       name: Build and push
-      id: build_and_push
+      id: build-and-push
       if: steps.scanner.outcome =='success'
       uses: docker/build-push-action@v5
       with:
           push: true
-          tags: tulearn/go-fortune:latest
+          tags: "tulearn/gofortune:latest"
 
     
     - name: Install Cosign
@@ -95,11 +95,11 @@ jobs:
     
     - name: Sign image with a key
       run: |
-        cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
+        cosign sign --yes --key env://COSIGN_PRIVATE_KEY ${TAGS}@${DIGEST}
       env:
-        TAGS: tulearn/go-fortune:latest
-        COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+        TAGS: "tulearn/gofortune:latest"
+        COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
         COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-        DIGEST: ${{ github.sha }}
+        DIGEST: ${{ steps.build-and-push.outputs.digest }}
 
   
