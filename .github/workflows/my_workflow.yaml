@@ -91,7 +91,7 @@ jobs:
 
     - name: Sign the images with GitHub OIDC Token
       env:
-        DIGEST: ${{ steps.build-and-push.outputs.digest }}
+        DIGEST: ${{ steps.build_and_push.outputs.digest }}
         TAGS: tulearn/go-fortune:latest
       run: cosign sign --yes "${TAGS}@${DIGEST}"
 
