@@ -87,9 +87,11 @@ jobs:
 
     
     - name: Install Cosign
+      if: steps.scanner.outcome =='success'
       uses: sigstore/cosign-installer@v3.1.1
 
     - name: Sign the images with GitHub OIDC Token
+      if: steps.scanner.outcome =='success'
       env:
         DIGEST: ${{ steps.build_and_push.outputs.digest }}
         TAGS: tulearn/go-fortune:latest
