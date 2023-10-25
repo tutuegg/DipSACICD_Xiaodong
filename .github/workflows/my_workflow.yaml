@@ -99,6 +99,6 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_COLOR: good
           SLACK_TITLE: Successful - Wu Xiaodong
-          SLACK_MESSAGE: *Name:* Wu Xiaodong  \n*Metriculation:* A0287261Y\n*Email:* e1285207@u.nus.edu\n*Git:* https://github.com/${{github.repository}}\n*Image:* https://hub.docker.com/repository/docker/tulearn/go-fortune/general 
+          SLACK_MESSAGE: "*Name:* Wu Xiaodong  \n*Metriculation:* A0287261Y\n*Email:* e1285207@u.nus.edu\n*Git:* https://github.com/${{github.repository}}\n*Image:* https://hub.docker.com/repository/docker/tulearn/go-fortune/general"
           SLACK_MSG_AUTHOR: author
 
