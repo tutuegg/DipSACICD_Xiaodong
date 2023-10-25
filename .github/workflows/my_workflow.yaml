@@ -36,7 +36,7 @@ jobs:
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL'
+        severity: 'HIGH'
         output: 'trivy-results.txt'
       continue-on-error: true
 
@@ -48,6 +48,8 @@ jobs:
          SLACK_COLOR: '#FF0000'
          SLACK_TITLE: Scan failed - Wu Xiaodong
          SLACK_MESSAGE: Failed trivy scan, see uploaded report
+         SLACK_MSG_AUTHOR: Wu Xiaodong 
+
   
     - name: upload_report
       if: steps.scanner.outcome !='success'
@@ -56,7 +58,8 @@ jobs:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
           file_path: 'trivy-results.txt'
-          initial_comment: 'post by WXD'
+          initial_comment: 'post by Wu Xiaodong'
+          
     
     - 
       name: Set up QEMU
@@ -100,5 +103,5 @@ jobs:
           SLACK_COLOR: good
           SLACK_TITLE: Successful - Wu Xiaodong
           SLACK_MESSAGE: "*Name:* Wu Xiaodong  \n*Metriculation:* A0287261Y\n*Email:* e1285207@u.nus.edu\n*Git:* https://github.com/${{github.repository}}\n*Image:* https://hub.docker.com/repository/docker/tulearn/go-fortune/general"
-          SLACK_MSG_AUTHOR: author
+          SLACK_MSG_AUTHOR: Wu Xiaodong 
 
