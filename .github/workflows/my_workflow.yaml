@@ -8,6 +8,8 @@ on:
       - '!feature-*'
 jobs:
   my_first_cicd:
+    if: ${{ !contains(github.event.head_commit.message,'#NORUN') }}
+    name: sss
     runs-on: ubuntu-latest
 
     permissions:
@@ -57,14 +59,6 @@ jobs:
           file_path: 'trivy-results.txt'
           initial_comment: 'post by WXD'
     
-    - name: Slack_Notification_SUCCESS
-      if: steps.scanner.outcome =='success'
-      uses: rtCamp/action-slack-notify@v2
-      env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_COLOR: good
-          SLACK_TITLE: Scan failed
-          SLACK_MESSAGE: Failed trivy scan, see uploaded report
     - 
       name: Set up QEMU
       if: steps.scanner.outcome =='success'
@@ -99,4 +93,16 @@ jobs:
         TAGS: tulearn/go-fortune:latest
       run: cosign sign --yes "${TAGS}@${DIGEST}"
 
-  
+    - name: Slack_Notification_SUCCESS
+      if: steps.scanner.outcome =='success'
+      uses: rtCamp/action-slack-notify@v2
+      env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_COLOR: good
+          SLACK_TITLE: Successful
+          SLACK_MESSAGE: >
+            "*Name:*Name \n *Metriculation:*Metriculation \n *Email:*123@gmail.com \n 
+            *Git:*https://github.com/${{github.repository}} \n 
+            *Image*https://hub.docker.com/repository/docker/tulearn/go-fortune/general "
+          SLACK_MSG_AUTHOR: author
+
